@@ -21,7 +21,7 @@ class ViteAssetExtension extends AbstractExtension
         if (empty($this->manifestData)) {
             $this->manifestData = json_decode(file_get_contents($this->manifestPath), true);
         }
-        return $this->manifestData ?? [];
+        return $this->manifestData;
     }
 
     public function getFunctions(): array

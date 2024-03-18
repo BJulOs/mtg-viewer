@@ -23,12 +23,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ImportCardCommand extends Command
 {
     public function __construct(
-        private readonly CardRepository         $cardRepository,
+        private readonly CardRepository $cardRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger,
-        private array                           $csvHeader = []
-    )
-    {
+        private readonly LoggerInterface $logger,
+        private array $csvHeader = []
+    ) {
         parent::__construct();
     }
 

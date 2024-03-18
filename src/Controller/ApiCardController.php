@@ -16,8 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiCardController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface $logger
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
     #[Route('/all', name: 'List all cards', methods: ['GET'])]
