@@ -43,7 +43,7 @@ docker compose pull
 docker compose build
 docker compose run --rm php composer install
 docker compose run --rm vite npm install
-docker compose run --rm php bin/console doctrine:migrations:migrate --no-interaction
+docker compose run --rm php php bin/console doctrine:migrations:migrate --no-interaction
 ````
 
 Ensuite, il faut récupérer les données nécessaires pour le projet
@@ -56,7 +56,7 @@ Si vous n'avez pas curl, vous pouvez télécharger le fichier manuellement et le
 ## Importer les données
 Pour importer les données dans la base de données, il faut lancer la commande suivante:
 ```bash
-docker compose run --rm php bin/console import:card
+docker compose run --rm php php bin/console import:card
 ```
 
 ## Documentation de l'API
