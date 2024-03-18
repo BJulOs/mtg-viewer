@@ -2,15 +2,12 @@
 
 namespace App\Command;
 
-use App\Entity\Artist;
 use App\Entity\Card;
-use App\Repository\ArtistRepository;
 use App\Repository\CardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +19,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ImportCardCommand extends Command
 {
+    private int $size = 0;
+
     public function __construct(
         private readonly CardRepository $cardRepository,
         private readonly EntityManagerInterface $entityManager,
@@ -33,7 +32,6 @@ class ImportCardCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // On récupère le temps actuel
         $io = new SymfonyStyle($input, $output);
         $filepath = __DIR__ . '/../../data/cards.csv';
         $handle = fopen($filepath, 'r');
@@ -44,20 +42,22 @@ class ImportCardCommand extends Command
             return Command::FAILURE;
         }
 
-        $i = 0;
+        $this->size = 0;
         $this->csvHeader = fgetcsv($handle);
         while (($row = $this->readCSV($handle)) !== false) {
-            $i++;
+            $this->size++;
             $io->writeln($this->addCard($row)->getName());
 
-            // TODO: Importer toutes les cartes
-            if ($i > 500) {
+            if ($this->size > 10000) {
                 break;
             }
         }
 
+        // Effectuer un dernier flush pour s'assurer que toutes les cartes sont persistées
+        $this->entityManager->flush();
+
         fclose($handle);
-        $io->success('File found, ' . $i . ' lines read.');
+        $io->success('File found, ' . $this->size . ' lines read.');
         return Command::SUCCESS;
     }
 
@@ -87,8 +87,13 @@ class ImportCardCommand extends Command
             $card->setText($row['text']);
             $card->setType($row['type']);
             $this->entityManager->persist($card);
-            $this->entityManager->flush();
+
+            // Effectuer un flush tous les 1000 enregistrements
+            if ($this->size % 1000 === 0) {
+                $this->entityManager->flush();
+            }
         }
+
         return $card;
     }
 }
