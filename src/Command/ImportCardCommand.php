@@ -68,6 +68,9 @@ class ImportCardCommand extends Command
                 $this->entityManager->clear();
                 $progressIndicator->advance();
             }
+            if ($i>10000) {
+                break;
+            }
         }
         // Toujours flush en sorti de boucle
         $this->entityManager->flush();
