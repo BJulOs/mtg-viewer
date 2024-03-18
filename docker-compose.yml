@@ -39,5 +39,11 @@ services:
         - "${VITE_SERVER_PORT:-3000}:3000"
     command: npm run dev
 
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
 volumes:
     db-data:
