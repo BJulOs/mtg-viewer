@@ -56,7 +56,7 @@ Si vous n'avez pas curl, vous pouvez télécharger le fichier manuellement et le
 ## Importer les données
 Pour importer les données dans la base de données, il faut lancer la commande suivante:
 ```bash
-docker compose run --rm php php bin/console import:card
+docker compose run --rm php php bin/console import:card --no-debug
 ```
 
 ## Documentation de l'API
