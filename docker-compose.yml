@@ -28,8 +28,7 @@ services:
       MARIADB_DATABASE: ${DB_DATABASE:-database}
       MARIADB_USER: ${DB_USERNAME:-user}
       MARIADB_PASSWORD: ${DB_PASSWORD:-password}
-    volumes:
-        - db-data:/var/lib/mysql
+
   vite:
     image: node:20-alpine
     volumes:
@@ -45,5 +44,3 @@ services:
       - "8080:8080"
     depends_on:
       - db
-volumes:
-    db-data:
