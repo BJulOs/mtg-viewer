@@ -69,7 +69,7 @@ class ImportCardCommand extends Command
                 $progressIndicator->advance();
             }
 
-            if ($i > 20000){
+            if ($i > 5000){
                 break;
             }
         }
@@ -95,7 +95,7 @@ class ImportCardCommand extends Command
         return array_combine($this->csvHeader, $row);
     }
 
-    private function addCard(array $row)
+    private function addCard(array $row): void
     {
         $uuid = $row['uuid'];
 
