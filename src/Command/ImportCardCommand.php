@@ -69,7 +69,7 @@ class ImportCardCommand extends Command
                 $progressIndicator->advance();
             }
 
-            if ($i > 30000){
+            if ($i > 20000){
                 break;
             }
         }
